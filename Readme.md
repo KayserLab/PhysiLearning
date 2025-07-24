@@ -55,15 +55,6 @@ src/physilearning/train.py script directly.
 Typical training of ODE-based environment should converge on a single core within 24 hours,
 depnding on the environment parameters and reward. 
 
-#### List of example policies
-This is for now only an example, these values will not work
-
-| **Usage**       | **policy_kwargs**                                       | **Description**                                  |
-|-----------------|---------------------------------------------------------|--------------------------------------------------|
-| Number obs      | `dict('net_arch': dict('pi': [32, 32], 'vf': [32, 32))` | Control the size of actor and critic networks    |
-| Image/Multi obs | `dict('cnn_output_dim': 16)`                            | Control number of extracted features from images |
-
-
 ### Evaluation
 To evaluate the agent, run the following command:
 ```bash
