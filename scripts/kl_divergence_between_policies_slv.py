@@ -67,7 +67,7 @@ def get_probs(agent_id = 1, agent_id_2 = 2):
 
     model_2_name = f'/home/saif/Projects/PhysiLearning/data/GRAPE_important_data/SLV_training/Training/SavedModels/20250206_slv_1_{agent_id_2}_best_reward.zip'
     model2 = get_model(model_2_name, evaluation)
-    num_episodes = 1
+    num_episodes = 50
     # create observation buffer to further sample for probabilities and kl divergence calculations
     obs_buffer = []
 
@@ -137,33 +137,17 @@ div = stable_baselines3.common.distributions.kl_divergence(probs1, probs2)
 scalar_div = div.mean().item()
 
 # create 10 by 10 matrix of KL divergence values
-policy_distances = np.ndarray((10, 10))
+policy_distances = np.ndarray((10))
 for agent in range(1, 11):
-    for agent_2 in range(1, 11):
+    for agent_2 in [4]:
         probs1, probs2 = get_probs(agent_id = agent, agent_id_2 = agent_2)
         div = stable_baselines3.common.distributions.kl_divergence(probs1, probs2)
         scalar_div = div.mean().item()
         print(f'Agent {agent} KL divergence: {scalar_div}')
-        policy_distances[agent - 1, agent_2 - 1] = scalar_div
+        policy_distances[agent - 1] = scalar_div
 
 # symmetrize the matrix of kl divergence by doing JS = 0.5 * (KL(P||Q) + KL(Q||P))
 policy_distances = 0.5 * (policy_distances + policy_distances.T)
 print(policy_distances)
-# measure MDS
-from sklearn.manifold import MDS
 
-mds = MDS(n_components=2, dissimilarity='precomputed', random_state=42)
-mds_transformed = mds.fit_transform(policy_distances)
-
-print(mds_transformed)
-import matplotlib.pyplot as plt
-fig, ax = plt.subplots()
-ax.scatter(mds_transformed[:, 0], mds_transformed[:, 1])
-
-# 1D mds
-mds_1d = MDS(n_components=1, dissimilarity='precomputed', random_state=42)
-mds_1d_transformed = mds_1d.fit_transform(policy_distances)
-print(mds_1d_transformed)
-
-a = [md[0] for md in mds_1d_transformed]
 

@@ -186,9 +186,9 @@ def main():
 # plot(df, f'LV', scale='linear', truncate=False, ax = ax, c='red')
 #
 fig, ax = plt.subplots()
-df = pd.read_hdf('./data/GRAPE_important_data/SLV_training/Evaluations/SLvEnvEval_test_at50_agent_slv20250206_slv_1_9.h5', key='run_0')
+df = pd.read_hdf('./data/GRAPE_important_data/SLV_training/Evaluations/SLvEnvEval__at50_agent_slv20250206_slv_1_9.h5', key='run_20')
 # scatter first 4 points with skip 6, plot the rest
-probing = 28
+probing = 31
 skip = 1
 ax.scatter(df.index[:probing:skip]/4, df['Type 0'][:probing:skip], color='blue', label='Type 0', s=2)
 ax.scatter(df.index[:probing:skip]/4, df['Type 1'][:probing:skip], color='red', label='Type 1', s=2)
@@ -199,8 +199,8 @@ ax.plot(df.index[probing::skip]/4, df['Type 1'][probing::skip], color='red', lab
 ax.plot(df.index[probing::skip]/4, df['Type 0'][probing::skip] + df['Type 1'][probing::skip], color='k', label='Total')
 
 fig, ax = plt.subplots()
-df = pd.read_hdf('./data/GRAPE_important_data/SLV_training/Evaluations/SLvEnvEval_test_at100_agent_slv20250206_slv_1_9.h5', key='run_0')
-probing = 28
+df = pd.read_hdf('./data/GRAPE_important_data/SLV_training/Evaluations/SLvEnvEval__at75_agent_slv20250206_slv_1_9.h5', key='run_20')
+probing = 31
 skip = 1
 ax.scatter(df.index[:probing:skip]/4, df['Type 0'][:probing:skip], color='blue', label='Type 0', s=2)
 ax.scatter(df.index[:probing:skip]/4, df['Type 1'][:probing:skip], color='red', label='Type 1', s=2)

@@ -28,9 +28,9 @@ def fixed_at(environment: LvEnv or PcEnv or GridEnv,
     :param at_type: type of adaptive therapy strategy
     :return: action
     """
-    if isinstance(environment, VecMonitor):
-        raise DontWrapError('Do not wrap the environment for fixed adaptive therapy')
-
+    if isinstance(environment, VecMonitor) or isinstance(environment, VecFrameStack):
+        #raise DontWrapError('Do not wrap the environment for fixed adaptive therapy')
+        environment = environment.venv.envs[0].env
     tumor_size = environment.state[0]+environment.state[1]
 
     if at_type == 'zhang_et_al':
@@ -201,7 +201,12 @@ class Evaluation:
                 if fixed_therapy:
                     action = fixed_at(self.env, **fixed_therapy_kwargs)
                 else:
-                    action, _state = model.predict(obs, deterministic=True)
+                    if self.env.get_attr('time')[0] < 30:
+                        self.env.venv.envs[0].env.treatment_time_step = 1
+                        action = [fixed_at(self.env, threshold=0.5, at_type='zhang_et_al')]
+                    else:
+                        self.env.venv.envs[0].env.treatment_time_step = 6
+                        action, _state = model.predict(obs, deterministic=True)
                 if self._is_venv():
                     self.trajectory = self.env.get_attr('trajectory')[0]
                     if self.env.get_attr('observation_type')[0] == 'image':

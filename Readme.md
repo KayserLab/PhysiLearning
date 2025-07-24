@@ -17,7 +17,7 @@ cd PhysiLearning
 pip install -e .
 ```
 
-You will also need to install ZMQ cpp library. On Ubuntu:
+You will also need to install ZMQ cpp library for physicell environment to work. On Ubuntu:
 ```bash
 sudo apt-get install libzmq-dev
 ```
@@ -32,22 +32,28 @@ both the environment(simulation) and the agent.
 See the config.yaml file for more details on the configuration, it should be self-explanatory.
 
 ### First steps  
-To make sure that PhysiCell works on your machine, run the following command:
+To make sure that PhysiCell works on your machine, run the following command to compile:
 ```bash
 make raven
 ```
-or 
+for compiling on HPC cluster. Or 
 ```bash
 make mela
 ```
-depending on where you want to run the simulation. This will recompile PhysiCell with the options that are 
+for the local Linux machine. This will recompile PhysiCell with the options that are 
 machine specific. 
+
+Typical installation time should take around 5-10 minutes. 
 
 ### Training
 To train the agent on ubuntu with installed slurm queuing system, run the following command:
 ```bash
 python run.py train
 ```
+This will submit the training job defined in the config file. Alternatively run the 
+src/physilearning/train.py script directly.
+Typical training of ODE-based environment should converge on a single core within 24 hours,
+depnding on the environment parameters and reward. 
 
 #### List of example policies
 This is for now only an example, these values will not work
@@ -63,6 +69,7 @@ To evaluate the agent, run the following command:
 ```bash
 python run.py evaluate
 ```
+Successful training should produce TTF of more than 20 generations. 
 
 ### Simulating virtual patients with barcode tracking
 To simulate virtual patients with barcode tracking PhysiCell config via `./config.yaml` is not supported.

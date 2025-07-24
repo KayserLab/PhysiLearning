@@ -10,7 +10,7 @@ def change_svg_background(svg_file, new_color):
         lines = file.readlines()
 
     if len(lines) >= 13:
-        lines[12] = lines[12].replace('fill="white"', f'fill="{new_color}"')
+        lines[1] = lines[1].replace('fill="white"', f'fill="{new_color}"')
 
     with open(svg_file, 'w', encoding='utf-8') as file:
         file.writelines(lines)
@@ -30,9 +30,9 @@ def process_svgs(folder, target_frames, new_color):
 if __name__ == "__main__":
     os.chdir('/home/saif/Projects/PhysiLearning')
     # Example usage:
-    svg_directory = "./data/GRAPE_important_data/Best_agent_fig_2/"  # Change to your SVG folder path
+    svg_directory = "./data/GRAPE_important_data/Figure_5_AE_agent_movie/"  # Change to your SVG folder path
 
-    df = pd.read_hdf(f'./Evaluations/1402_pcs_evals/run_4.h5', key=f'run_0')
+    df = pd.read_hdf(f'./Evaluations/2002_pc_evals_of_slvs/run_1.h5', key=f'run_3')
     treat = np.array(df['Treatment'])[::2]
     target_frames = np.where(treat == 1)[0]
     #target_frames = np.arange(62)  # Frames where background should be changed

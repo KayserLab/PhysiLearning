@@ -110,7 +110,7 @@ eval:
   path: './data/GRAPE_important_data/SLV_training/'
   model_prefix: '20250206_slv_1_9'
   step_to_load: '_best_reward'
-  save_name: 'test_at100_agent_slv'
+  save_name: '_at50_agent_slv'
   # evaluation settings
   fixed_AT_protocol: 0
   at_type: 'fixed' #'effective_high_1.20_low_0.80' # 'mtd' # 'fixed' # 'zhang_et_al'# 'no_treatment'
