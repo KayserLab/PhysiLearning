@@ -21,7 +21,17 @@ You will also need to install ZMQ cpp library for physicell environment to work.
 ```bash
 sudo apt-get install libzmq-dev
 ```
+If you don't have root access, you can install it from source:
+- Download the source code from [libzmq](https://github.com/zeromq/libzmq)
+- Briefly, the shell commands `./configure; make; make install` should
+configure, build, and install this package.
+- See INSTALL and README files in the source distribution for more details.
+
 After you installed zmq update ZMQLIB flag in src/PhysiCell_src/Makefile with the path to the library.
+
+Check out `src/PhysiCell_src/sample_projects/Mafile-mela and Makefile-raven` for examples.
+
+Typical installation time should take around 5-10 minutes. 
 
 ## Usage 
 
@@ -31,21 +41,28 @@ both the environment(simulation) and the agent.
 
 See the config.yaml file for more details on the configuration, it should be self-explanatory.
 
-### First steps  
-To make sure that PhysiCell works on your machine, run the following command to compile:
-```bash
-make raven
-```
-for compiling on HPC cluster. Or 
-```bash
-make mela
-```
-for the local Linux machine. This will recompile PhysiCell with the options that are 
-machine specific. 
+### Some details on implementation
 
-Typical installation time should take around 5-10 minutes. 
+PhysiCell is connected to a python gymnasium environment via ZMQ communication library.
+Changes in PhysiCell source code are in the `main.cpp` and `custom.cpp` files.
+In main, socket creation and binding is defined in the beginning of the fail and rules 
+for when and what to send are down at the `/* Custom add-ons could potentially go here. */` section.
+Custom file defines the function for receiving and sending data and what to do with it. 
+Currently it sends sensitive and resistant cell numbers and positions. For different RL observations and what the action does
+to PhysiCell `talk_to_pcenv` function should be modified.
+
+On the python side the environment is defined in the `src/physilearning/envs/pc.py` file.
+Socket settings happen in the constructor of the PcEnv class. Private methods such as
+`_get_cell_number` define how to process messages received from PhysiCell. Currently,in addition
+to cell numbers positions are communicated as well for image-like observations.
+
+As development of this project will be discontinued due to me finishing my PhD, see also
+[PhysiGym repo](https://github.com/Dante-Berth/PhysiGym) for potentially more up to date development
+in using RL with PhysiCell.
+
 
 ### Training
+For training and evaluation with SLURM queuing system some of the things below might be quite useful.
 To train the agent on ubuntu with installed slurm queuing system, run the following command:
 ```bash
 python run.py train
